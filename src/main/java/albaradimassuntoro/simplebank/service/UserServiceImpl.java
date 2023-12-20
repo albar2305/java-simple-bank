@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -61,8 +62,20 @@ public class UserServiceImpl implements UserService{
   }
 
   @Override
-  public UserResponse update(User user, UpdateUserRequest request) {
-    return null;
+  public UserResponse update(String username, UpdateUserRequest request) {
+    validationService.validate(request);
+    User user = userRepository.findByUsername(username);
+    if (Objects.nonNull(request.getFullName())) {
+      user.setFullName(request.getFullName());
+    }
+
+    if (Objects.nonNull(request.getPassword())) {
+      user.setHashedPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
+    }
+
+    userRepository.save(user);
+
+    return UserResponse.builder().fullName(user.getFullName()).passwordChangedAt(user.getPasswordChangedAt()).createdAt(user.getCreatedAt()).email(user.getEmail()).username(username).build();
   }
 
   @Override

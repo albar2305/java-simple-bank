@@ -7,7 +7,7 @@ public interface UserService {
   void register(RegisterUserRequest request);
   UserResponse get(String username);
 
-  UserResponse update(User user, UpdateUserRequest request);
+  UserResponse update(String username, UpdateUserRequest request);
 
   JwtResponse login(LoginUserRequest request);
 }

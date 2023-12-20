@@ -20,7 +20,7 @@ public class RegisterUserRequest {
   private String username;
 
   @NotBlank
-  @Size(max = 100)
+  @Size(min = 6, max = 100)
   private String password;
 
   @NotBlank
