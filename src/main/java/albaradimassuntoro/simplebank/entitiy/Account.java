@@ -16,10 +16,10 @@ import java.util.List;
 public class Account {
   @Id
   private String id;
-
-  @ManyToOne
-  @JoinColumn(name = "owner",referencedColumnName = "username")
-  private User owner;
+//
+//  @ManyToOne
+//  @JoinColumn(name = "owner",referencedColumnName = "username")
+  private String owner;
 
   private Long balance;
 

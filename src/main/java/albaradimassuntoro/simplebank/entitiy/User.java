@@ -39,8 +39,8 @@ public class User {
   @Column(name = "created_at")
   private Timestamp createdAt;
 
-  @OneToMany(mappedBy = "owner")
-  private List<Account> accounts;
+//  @OneToMany(mappedBy = "owner")
+//  private List<Account> accounts;
 
   @ManyToMany(fetch = FetchType.EAGER)
   private Set<UserRole> roles = new HashSet<>();

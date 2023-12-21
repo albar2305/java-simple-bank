@@ -68,4 +68,3 @@ CREATE TABLE user_roles(
 
 use simple_bank;
 
-
