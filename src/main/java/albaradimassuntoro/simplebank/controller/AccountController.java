@@ -24,7 +24,7 @@ public class AccountController {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE
   )
-  public WebResponse<AccountResponse> register(@RequestBody CreateAccountRequest request){
+  public WebResponse<AccountResponse> register(@RequestBody CreateAccountRequest request) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     AccountResponse accountResponse = accountService.create(username, request);
     return WebResponse.<AccountResponse>builder().data(accountResponse).build();
@@ -35,7 +35,7 @@ public class AccountController {
       produces = MediaType.APPLICATION_JSON_VALUE
   )
   public WebResponse<List<AccountResponse>> list(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-                                                 @RequestParam(value = "size", required = false, defaultValue = "10") Integer size){
+                                                 @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     PagingRequest request = PagingRequest.builder().page(page).size(size).build();
     Page<AccountResponse> accountResponses = accountService.list(username, request);
@@ -47,5 +47,15 @@ public class AccountController {
             .size(accountResponses.getSize())
             .build())
         .build();
+  }
+
+  @GetMapping(
+      path = "/api/accounts/{id}",
+      produces = MediaType.APPLICATION_JSON_VALUE
+  )
+  public WebResponse<AccountResponse> get(@PathVariable("id") String id) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    AccountResponse accountResponse = accountService.get(username, id);
+    return WebResponse.<AccountResponse>builder().data(accountResponse).build();
   }
 }

@@ -15,7 +15,12 @@ import java.util.Date;
 import java.util.Objects;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
+
+  private final UserRepository userRepository;
+  private final ValidationService validationService;
+  private final JwtService jwtService;
+
 
   @Autowired
   public UserServiceImpl(UserRepository userRepository, ValidationService validationService, JwtService jwtService) {
@@ -24,43 +29,36 @@ public class UserServiceImpl implements UserService{
     this.jwtService = jwtService;
   }
 
-
-  private final UserRepository userRepository;
-
-
-  private final ValidationService validationService;
-
-
-  private final JwtService jwtService;
-
   @Override
   @Transactional
   public void register(RegisterUserRequest request) {
     validationService.validate(request);
 
-    if (userRepository.existsById(request.getUsername())){
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Username already registered");
+    if (userRepository.existsById(request.getUsername())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already registered");
     }
 
-    if (userRepository.existsByEmail(request.getEmail())){
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Email already registered");
+    if (userRepository.existsByEmail(request.getEmail())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already registered");
     }
     User user = new User();
     user.setUsername(request.getUsername());
     user.setFullName(request.getFullName());
     user.setEmail(request.getEmail());
-    user.setHashedPassword(BCrypt.hashpw(request.getPassword(),BCrypt.gensalt()));
+    user.setHashedPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
     user.setCreatedAt(new Timestamp(new Date().getTime()));
 
     userRepository.save(user);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public UserResponse get(String username) {
     User user = userRepository.findByUsername(username);
     return UserResponse.builder().username(user.getUsername()).email(user.getEmail()).createdAt(user.getCreatedAt()).fullName(user.getFullName()).passwordChangedAt(user.getPasswordChangedAt()).build();
   }
 
+  @Transactional
   @Override
   public UserResponse update(String username, UpdateUserRequest request) {
     validationService.validate(request);

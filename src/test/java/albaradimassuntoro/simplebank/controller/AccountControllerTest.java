@@ -118,4 +118,32 @@ class AccountControllerTest {
       assertEquals(10, response.getPaging().getSize());
     });
   }
+
+  @Test
+  void testGetSuccess() throws Exception {
+    Account account = new Account();
+    account.setCurrency("IDR");
+    account.setBalance(0L);
+    account.setOwner("test");
+    account.setId("test");
+    account.setCreatedAt(new Timestamp(new Date().getTime()));
+    accountRepository.save(account);
+
+    mockMvc.perform(
+        get("/api/accounts/test")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+    ).andExpectAll(
+        status().isOk()
+    ).andDo(result -> {
+      WebResponse<AccountResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+      });
+      assertNull(response.getErrors());
+      assertEquals(account.getId(), response.getData().getId());
+      assertEquals(account.getOwner(), response.getData().getOwner());
+      assertEquals(account.getCurrency(), response.getData().getCurrency());
+      assertEquals(account.getBalance(), response.getData().getBalance());
+    });
+  }
 }
