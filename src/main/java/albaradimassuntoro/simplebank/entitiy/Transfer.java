@@ -17,13 +17,11 @@ public class Transfer {
   @Id
   private String id;
 
-  @JoinColumn(name = "from_account_id",referencedColumnName = "id")
-  @ManyToOne
-  private Account fromAccount;
+  @Column(name = "from_account_id")
+  private String fromAccount;
 
-  @JoinColumn(name = "to_account_id",referencedColumnName = "id")
-  @ManyToOne
-  private Account toAccount;
+  @Column(name = "to_account_id")
+  private String toAccount;
 
   private Long amount;
 

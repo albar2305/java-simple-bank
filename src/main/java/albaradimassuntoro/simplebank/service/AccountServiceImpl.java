@@ -70,4 +70,13 @@ public class AccountServiceImpl implements AccountService {
     );
     return toAccountResponse(account);
   }
+
+  @Override
+  public AccountResponse addAccountBalance(Long amount, String id) {
+    Account account = accountRepository.findById(id).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account is not found")
+    );
+    account.setBalance(account.getBalance() + amount);
+    return toAccountResponse(accountRepository.save(account));
+  }
 }

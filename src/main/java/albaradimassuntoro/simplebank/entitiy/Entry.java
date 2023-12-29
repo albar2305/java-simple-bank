@@ -17,9 +17,7 @@ public class Entry {
   @Id
   private String id;
 
-  @ManyToOne
-  @JoinColumn(name = "account_id",referencedColumnName = "id")
-  private Account account;
+  private String accountId;
 
   private Long amount;
 

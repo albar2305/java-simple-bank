@@ -16,7 +16,7 @@ import java.util.List;
 public class Account {
   @Id
   private String id;
-//
+  //
 //  @ManyToOne
 //  @JoinColumn(name = "owner",referencedColumnName = "username")
   private String owner;
@@ -27,13 +27,4 @@ public class Account {
 
   @Column(name = "created_at")
   private Timestamp createdAt;
-
-  @OneToMany(mappedBy = "fromAccount")
-  private List<Transfer> transferFrom;
-
-  @OneToMany(mappedBy = "toAccount")
-  private List<Transfer> transferTo;
-
-  @OneToMany(mappedBy = "account")
-  private List<Entry> entries;
 }

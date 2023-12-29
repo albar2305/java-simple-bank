@@ -1,5 +1,6 @@
 package albaradimassuntoro.simplebank.service;
 
+import albaradimassuntoro.simplebank.entitiy.Account;
 import albaradimassuntoro.simplebank.model.AccountResponse;
 import albaradimassuntoro.simplebank.model.CreateAccountRequest;
 import albaradimassuntoro.simplebank.model.PagingRequest;
@@ -11,5 +12,7 @@ public interface AccountService {
   Page<AccountResponse> list(String username, PagingRequest request);
 
   AccountResponse get(String username, String id);
+
+  AccountResponse addAccountBalance(Long amount, String id);
 
 }
